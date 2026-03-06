@@ -1,0 +1,26 @@
+{
+  "name": "auth-system",
+  "version": "1.0.0",
+  "description": "Sistema de Login e Autenticação (JWT)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WilliandosSantos89/auth-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WilliandosSantos89/auth-system/issues"
+  },
+  "homepage": "https://github.com/WilliandosSantos89/auth-system#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.6.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3"
+  }
+}
