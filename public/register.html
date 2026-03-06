@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">🔐</div>
+      <h1>Criar conta</h1>
+      <p class="auth-subtitle">Preencha os dados abaixo</p>
+
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" id="name" placeholder="Seu nome completo" />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="seu@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="password" placeholder="Mínimo 6 caracteres" />
+      </div>
+
+      <p id="feedback" class="feedback hidden"></p>
+
+      <button class="btn-primary" onclick="registrar()">Criar conta</button>
+
+      <p class="auth-link">Já tem conta? <a href="/login.html">Entrar</a></p>
+    </div>
+  </div>
+
+  <script>
+    async function registrar() {
+      const name     = document.getElementById('name').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!name || !email || !password) {
+        mostrarFeedback('Preencha todos os campos.', 'erro');
+        return;
+      }
+
+      const btn = document.querySelector('.btn-primary');
+      btn.textContent = 'Criando...';
+      btn.disabled = true;
+
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const data = await res.json();
+      btn.textContent = 'Criar conta';
+      btn.disabled = false;
+
+      if (res.ok) {
+        mostrarFeedback('Conta criada! Redirecionando...', 'ok');
+        setTimeout(() => window.location.href = '/login.html', 1500);
+      } else {
+        mostrarFeedback(data.error, 'erro');
+      }
+    }
+
+    function mostrarFeedback(msg, tipo) {
+      const el = document.getElementById('feedback');
+      el.textContent = msg;
+      el.className = `feedback ${tipo}`;
+    }
+  </script>
+</body>
+</html>

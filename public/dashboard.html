@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="dashboard-card">
+      <div class="auth-logo">✅</div>
+      <h1>Você está autenticado!</h1>
+      <p class="auth-subtitle" id="welcome">Carregando...</p>
+
+      <div class="user-info" id="userInfo"></div>
+
+      <button class="btn-danger" onclick="logout()">Sair 🚪</button>
+    </div>
+  </div>
+
+  <script>
+    // Ao carregar a página, verifica se tem token
+    async function verificarAuth() {
+      const token = localStorage.getItem('token');
+      const name  = localStorage.getItem('userName');
+
+      // Se não tem token, manda pro login
+      if (!token) {
+        window.location.href = '/login.html';
+        return;
+      }
+
+      // Chama a rota protegida enviando o token no header
+      const res = await fetch('/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!res.ok) {
+        // Token expirado ou inválido
+        localStorage.clear();
+        window.location.href = '/login.html';
+        return;
+      }
+
+      const data = await res.json();
+
+      document.getElementById('welcome').textContent = `Olá, ${data.user.name}! 👋`;
+      document.getElementById('userInfo').innerHTML = `
+        <p><strong>Email:</strong> ${data.user.email}</p>
+        <p><strong>ID:</strong> ${data.user.id}</p>
+        <p><strong>Token expira em:</strong> 2 horas</p>
+      `;
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = '/login.html';
+    }
+
+    verificarAuth();
+  </script>
+</body>
+</html>

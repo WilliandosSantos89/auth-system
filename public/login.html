@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">👤</div>
+      <h1>Bem-vindo</h1>
+      <p class="auth-subtitle">Entre na sua conta</p>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="seu@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="password" placeholder="Sua senha" />
+      </div>
+
+      <p id="feedback" class="feedback hidden"></p>
+
+      <button class="btn-primary" onclick="login()">Entrar</button>
+
+      <p class="auth-link">Não tem conta? <a href="/register.html">Cadastrar</a></p>
+    </div>
+  </div>
+
+  <script>
+    async function login() {
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        mostrarFeedback('Preencha todos os campos.', 'erro');
+        return;
+      }
+
+      const btn = document.querySelector('.btn-primary');
+      btn.textContent = 'Entrando...';
+      btn.disabled = true;
+
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+      btn.textContent = 'Entrar';
+      btn.disabled = false;
+
+      if (res.ok) {
+        // Salva o token e o nome no localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userName', data.name);
+        window.location.href = '/dashboard.html';
+      } else {
+        mostrarFeedback(data.error, 'erro');
+      }
+    }
+
+    function mostrarFeedback(msg, tipo) {
+      const el = document.getElementById('feedback');
+      el.textContent = msg;
+      el.className = `feedback ${tipo}`;
+    }
+  </script>
+</body>
+</html>
