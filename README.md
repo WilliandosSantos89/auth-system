@@ -1,77 +1,97 @@
-# 🔐 Sistema de Login e Autenticação com JWT
+# Sistema de Login e Autenticação com JWT
 
-Sistema completo de autenticação desenvolvido do zero com Node.js, bcrypt e JSON Web Tokens.
+Aplicação educacional que demonstra um fluxo completo de cadastro, login e acesso a rotas protegidas usando Node.js, SQLite, bcrypt e JSON Web Tokens.
 
-## ✨ Funcionalidades
+> **Status:** projeto de estudo funcional. Não deve ser usado em produção sem revisão de segurança, testes automatizados e configuração adequada de infraestrutura.
 
-- Cadastro de usuário com validação e hash de senha
-- Login com geração de token JWT
-- Rota protegida acessível apenas com token válido
-- Dashboard autenticado com dados do usuário
-- Redirecionamento automático para login se não autenticado
-- Feedback visual de erros e sucesso em todas as telas
-- Logout com limpeza de sessão
+## Problema demonstrado
 
-## 🛠️ Tecnologias
+O projeto mostra como uma aplicação pode cadastrar usuários sem armazenar senhas em texto puro, autenticar credenciais e proteger recursos do servidor com tokens de duração limitada.
 
-- **Node.js + Express** — servidor e rotas da API
-- **bcryptjs** — hash seguro de senhas
-- **jsonwebtoken** — geração e validação de tokens JWT
-- **better-sqlite3** — banco de dados local persistente
-- **HTML, CSS e JavaScript puro** — frontend sem frameworks
+## Funcionalidades
 
-## 🧠 Como funciona
-```
-Usuário se cadastra → senha é convertida em hash → salva no banco
-Usuário faz login   → hash comparado → token JWT gerado → enviado ao frontend
-Rota protegida      → token validado pelo middleware → acesso liberado
-```
+- cadastro de usuário com validação;
+- hash de senha com bcrypt;
+- login com geração de token JWT;
+- middleware para validar tokens;
+- rota protegida;
+- dashboard autenticado;
+- mensagens de erro e sucesso;
+- logout e limpeza da sessão.
 
-O token JWT carrega os dados do usuário e expira em 2 horas. Sem token válido, qualquer rota protegida retorna erro 401 ou 403.
+## Fluxo de autenticação
 
-## 🚀 Como rodar localmente
+~~~text
+Cadastro → hash da senha → persistência no SQLite
+Login → comparação do hash → geração do JWT
+Rota protegida → validação do token → acesso autorizado
+~~~
 
-**Pré-requisitos:** Node.js instalado
-```bash
-# Clone o repositório
+O token expira após duas horas. Requisições sem um token válido recebem resposta 401 ou 403.
+
+## Tecnologias
+
+| Tecnologia | Uso |
+| --- | --- |
+| Node.js e Express | servidor HTTP e rotas |
+| bcryptjs | hash e comparação de senhas |
+| jsonwebtoken | criação e validação de JWT |
+| better-sqlite3 | persistência local |
+| HTML, CSS e JavaScript | interface do usuário |
+
+## Como executar
+
+**Pré-requisito:** Node.js instalado.
+
+~~~bash
 git clone https://github.com/WilliandosSantos89/auth-system.git
-
-# Entre na pasta
 cd auth-system
-
-# Instale as dependências
 npm install
-
-# Inicie o servidor
 node server.js
-```
+~~~
 
-Acesse:
-- `http://localhost:3000/register.html` — Cadastro
-- `http://localhost:3000/login.html` — Login
-- `http://localhost:3000/dashboard.html` — Área protegida
+Depois, acesse:
 
-## 📁 Estrutura do Projeto
-```
+- <code>http://localhost:3000/register.html</code> — cadastro;
+- <code>http://localhost:3000/login.html</code> — login;
+- <code>http://localhost:3000/dashboard.html</code> — área protegida.
+
+## Estrutura principal
+
+~~~text
 auth-system/
-├── server.js        # Servidor, rotas e middleware JWT
-├── database.js      # Configuração do SQLite
-├── package.json     # Dependências
+├── server.js
+├── database.js
+├── package.json
 └── public/
-    ├── register.html  # Tela de cadastro
-    ├── login.html     # Tela de login
-    ├── dashboard.html # Área autenticada
-    └── style.css      # Estilos globais
-```
+    ├── register.html
+    ├── login.html
+    ├── dashboard.html
+    └── style.css
+~~~
 
-## 📚 O que aprendi com esse projeto
+## Aprendizados
 
-- Como senhas são armazenadas com segurança usando hash bcrypt
-- O que é JWT, como é gerado e como é validado
-- Como criar middlewares de autenticação reutilizáveis
-- Banco de dados relacional com SQLite e SQL básico
-- Fluxo completo de autenticação em aplicações web
+- armazenamento seguro de senhas com hash;
+- autenticação baseada em tokens;
+- criação de middleware reutilizável;
+- persistência com SQLite;
+- integração entre frontend e API.
 
-## 👤 Autor
+## Próximas melhorias
 
-Feito por **Williando Santos** — [LinkedIn](https://linkedin.com/in/seu-perfil) · [GitHub](https://github.com/WilliandosSantos89)
+- adicionar testes automatizados;
+- aplicar cookies seguros em vez de depender apenas do armazenamento no navegador;
+- criar fluxo de recuperação de senha;
+- validar variáveis de ambiente;
+- remover artefatos locais e dependências versionadas do repositório.
+
+## Autor
+
+Desenvolvido por **Willian dos Santos**.
+
+[LinkedIn](https://www.linkedin.com/in/willian-dos-santos/) · [GitHub](https://github.com/WilliandosSantos89)
+
+## Licença
+
+Consulte o arquivo [LICENSE](LICENSE).
